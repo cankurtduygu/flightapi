@@ -2,3 +2,49 @@
 
 # @name home
 GET {{baseUrl}}
+
+@accessToken = Bearer {{login.response.body.bearer.access}}
+
+@normalToken = Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2YTI1Njc2MDg0NDgwYjhmNDFiOTA1NGUiLCJ1c2VybmFtZSI6Im5vcm1hbCIsImlzQWN0aXZlIjp0cnVlLCJpc0FkbWluIjpmYWxzZSwiaXNTdGFmZiI6ZmFsc2UsImlhdCI6MTc4MDgzNjE5MiwiZXhwIjoxNzgwOTIyNTkyfQ.rnoDFrC5JFpiTVurjUs2fOzgBMGal_U6gLdFUDCPNfM
+
+@loginSonrasiNormalToken = Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2YTI1Njc2MDg0NDgwYjhmNDFiOTA1NGUiLCJ1c2VybmFtZSI6Im5vcm1hbCIsImlzQWN0aXZlIjp0cnVlLCJpc0FkbWluIjpmYWxzZSwiaXNTdGFmZiI6ZmFsc2UsImlhdCI6MTc4MDgzNzEzMCwiZXhwIjoxNzgwOTIzNTMwfQ.xYp3shoUOQbBA2DX3hAXqxXCtlcjDOe5d2j-w9PErK8
+
+###
+# @name register
+POST {{baseUrl}}/auth/register
+Content-Type: application/json
+
+{
+  "username": "normal",
+  "email": "normal@test.com",
+  "password": "Normal!1234",
+  "firstName": "Normal",
+  "lastName": "Normal"
+}
+
+###
+# @name login
+post {{baseUrl}}/auth/login
+Content-Type: application/json
+
+{
+    "email": "normal@test.com",
+    "password": "Normal!1234"
+}
+
+### 
+# @name logout
+post {{baseUrl}}/auth/logout
+Authorization: {{accessToken}}
+
+### 
+
+# @name refresh
+post {{baseUrl}}/auth/refresh
+Content-Type: application/json
+
+{
+  "refresh":"{{login.response.body.bearer.refresh}}"
+}
+
+###

@@ -7,9 +7,9 @@ const router = require("express").Router();
 // URL: /
 
 // auth:
-// router.use("/auth", require("./auth"));
-// // user:
-// router.use("/users", require("./user"));
+router.use("/auth", require("./auth"));
+// user:
+//  router.use("/users", require("./user"));
 // // car: 
 // router.use("/cars", require("./car"));
 // // reservation: 
