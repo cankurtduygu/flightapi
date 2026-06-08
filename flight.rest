@@ -7,7 +7,7 @@ GET {{baseUrl}}
 
 @adminToken = Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NGM1ZWQxMjM0NWExMjM0NTY3ODkwMTEiLCJ1c2VybmFtZSI6ImFkbWluIiwiaXNBY3RpdmUiOnRydWUsImlzQWRtaW4iOnRydWUsImlzU3RhZmYiOmZhbHNlLCJpYXQiOjE3ODA4ODAyOTUsImV4cCI6MTc4MDk2NjY5NX0.uQ__CCSMDEQxwQzhAYpuba7f5ZlGSuLUJTMHW6us6dY
 
-@normalToken = Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NGM1ZWQxMjM0NWExMjM0NTY3ODkwMTQiLCJ1c2VybmFtZSI6ImR1eWd1IiwiaXNBY3RpdmUiOnRydWUsImlzQWRtaW4iOmZhbHNlLCJpc1N0YWZmIjpmYWxzZSwiaWF0IjoxNzgwODgwMzkyLCJleHAiOjE3ODA5NjY3OTJ9.62Pm8e-E5RjuVu4Qd5hd04e5vYeVw421yDXxECioGY4
+
 
 
 ###
@@ -28,15 +28,15 @@ Content-Type: application/json
 post {{baseUrl}}/auth/login
 Content-Type: application/json
 
- {
-     "email": "admin@flightapi.com",
-     "password": "Admin*123"
- }
-
 #  {
-#      "email": "duygu@test.com",
-#      "password": "Duygu*123"
-# }
+#      "email": "admin@flightapi.com",
+#      "password": "Admin*123"
+#  }
+
+    {
+      "email": "duygu@test.com",
+      "password": "Duygu*123"
+    }
 
 ### 
 # @name logout
@@ -119,6 +119,11 @@ Authorization: {{accessToken}}
 ###
 # @name flightList
 get {{baseUrl}}/flights
-# Authorization: {{accessToken}}
+Authorization: {{accessToken}}
 # Authorization: {{adminToken}}
-Authorization: {{normalToken}}
+
+
+###
+# @name flightRead
+get {{baseUrl}}/flights/6a2616062d4b2050a58b1d79
+Authorization: {{accessToken}}

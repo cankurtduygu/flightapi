@@ -7,6 +7,7 @@
 const Flight = require('../models/flight');
 const passwordValidation = require('../helpers/passwordValidation');
 const CustomError = require('../helpers/customError');
+const { isAdmin, isStaffOrAdmin } = require('../middlewares/permissions');
 
 module.exports = {
   list: async (req, res) => {
@@ -79,14 +80,29 @@ module.exports = {
       #swagger.summary = "Get Single Flight"
     */
 
-    //? Yetkisiz kullanıcının başka bir kullanıcıyı yönetmesini engelle (sadece kendi verileri):
-    if (req.user._id !== req.params.id)
+    const isAdminOrStaff = req.user.isAdmin || req.user.isStaff;
+
+    const data = await Flight.findOne({ _id: req.params.id }).populate([
+      { path: 'createdId', select: 'username, email' },
+      { path: 'updatedId', select: 'username, email' },
+    ]);
+
+    if (!data) {
+      throw new CustomError('Flight not found.', 404);
+    }
+
+    if (
+      !isAdminOrStaff &&
+      (!data.isPublished ||
+        !['scheduled', 'delayed'].includes(data.status) ||
+        data.availableSeats <= 0 ||
+        data.departureDate < new Date())
+    ) {
       throw new CustomError(
-        'You are not authorized to access this resource',
+        'You are not authorized to access this flight.',
         403
       );
-
-    const data = await Flight.findOne({ _id: req.params.id });
+    }
 
     res.status(200).send({
       error: false,
@@ -174,7 +190,7 @@ module.exports = {
     */
 
     //? Yetkisiz kullanıcının başka bir kullanıcıyı yönetmesini engelle (sadece kendi verileri):
-    if (!req.user.isAdmin && req.user._id !== req.params.id)
+    if (!req.user.isStaffOrAdmin && req.user._id !== req.params.id)
       throw new CustomError(
         'You are not authorized to access this resource',
         403
