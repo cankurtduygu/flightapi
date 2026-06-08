@@ -67,3 +67,6 @@ const server = app.listen(PORT, async () => {
       server.close(() => process.exit(1));
     });
 });
+/* ------------------------------------------------------- */
+// Syncronization (must be in commentLine):
+// require("./src/helpers/sync")();

@@ -5,9 +5,10 @@ GET {{baseUrl}}
 
 @accessToken = Bearer {{login.response.body.bearer.access}}
 
-@normalToken = Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2YTI1Njc2MDg0NDgwYjhmNDFiOTA1NGUiLCJ1c2VybmFtZSI6Im5vcm1hbCIsImlzQWN0aXZlIjp0cnVlLCJpc0FkbWluIjpmYWxzZSwiaXNTdGFmZiI6ZmFsc2UsImlhdCI6MTc4MDgzNjE5MiwiZXhwIjoxNzgwOTIyNTkyfQ.rnoDFrC5JFpiTVurjUs2fOzgBMGal_U6gLdFUDCPNfM
+@adminToken = Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NGM1ZWQxMjM0NWExMjM0NTY3ODkwMTEiLCJ1c2VybmFtZSI6ImFkbWluIiwiaXNBY3RpdmUiOnRydWUsImlzQWRtaW4iOnRydWUsImlzU3RhZmYiOmZhbHNlLCJpYXQiOjE3ODA4ODAyOTUsImV4cCI6MTc4MDk2NjY5NX0.uQ__CCSMDEQxwQzhAYpuba7f5ZlGSuLUJTMHW6us6dY
 
-@loginSonrasiNormalToken = Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2YTI1Njc2MDg0NDgwYjhmNDFiOTA1NGUiLCJ1c2VybmFtZSI6Im5vcm1hbCIsImlzQWN0aXZlIjp0cnVlLCJpc0FkbWluIjpmYWxzZSwiaXNTdGFmZiI6ZmFsc2UsImlhdCI6MTc4MDgzNzEzMCwiZXhwIjoxNzgwOTIzNTMwfQ.xYp3shoUOQbBA2DX3hAXqxXCtlcjDOe5d2j-w9PErK8
+@normalToken = Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NGM1ZWQxMjM0NWExMjM0NTY3ODkwMTQiLCJ1c2VybmFtZSI6ImR1eWd1IiwiaXNBY3RpdmUiOnRydWUsImlzQWRtaW4iOmZhbHNlLCJpc1N0YWZmIjpmYWxzZSwiaWF0IjoxNzgwODgwMzkyLCJleHAiOjE3ODA5NjY3OTJ9.62Pm8e-E5RjuVu4Qd5hd04e5vYeVw421yDXxECioGY4
+
 
 ###
 # @name register
@@ -27,10 +28,15 @@ Content-Type: application/json
 post {{baseUrl}}/auth/login
 Content-Type: application/json
 
-{
-    "email": "normal@test.com",
-    "password": "Normal!1234"
-}
+ {
+     "email": "admin@flightapi.com",
+     "password": "Admin*123"
+ }
+
+#  {
+#      "email": "duygu@test.com",
+#      "password": "Duygu*123"
+# }
 
 ### 
 # @name logout
@@ -48,3 +54,71 @@ Content-Type: application/json
 }
 
 ###
+# @name userList
+
+get {{baseUrl}}/users/
+Authorization: {{accessToken}}
+
+###
+# @name userRead
+get {{baseUrl}}/users/6a1cc54d48a4b414efae5f50
+
+###
+# @name userCreate
+post {{baseUrl}}/users
+Content-Type: application/json
+
+{
+    "username": "admin2",
+    "password": "1234",
+    "email": "admin2@test.com",
+    "firstName": "admin",
+    "lastName": "admin",
+    "isActive": true,
+    "isAdmin": true
+}
+
+
+###
+# @name userUpdate
+put {{baseUrl}}/users/6a1cc54d48a4b414efae5f50
+Content-Type: application/json
+
+{
+    "isAdmin": false
+}
+
+###
+# @name userDelete
+delete {{baseUrl}}/users/6a1cc54d48a4b414efae5f50
+
+###
+# @name flightCreate
+POST {{baseUrl}}/flights
+Content-Type: application/json
+Authorization: {{accessToken}}
+
+{
+  "flightNumber": "XQ450",
+  "airline": "SunExpress",
+  "departureAirport": "Antalya Airport",
+  "departureCity": "Antalya",
+  "departureCountry": "Turkey",
+  "arrivalAirport": "Dusseldorf Airport",
+  "arrivalCity": "Dusseldorf",
+  "arrivalCountry": "Germany",
+  "departureDate": "2026-07-13T06:20:00.000Z",
+  "arrivalDate": "2026-07-13T09:30:00.000Z",
+  "capacity": 170,
+  "price": 110,
+  "currency": "EUR",
+  "status": "scheduled",
+  "isPublished": false
+}
+
+###
+# @name flightList
+get {{baseUrl}}/flights
+# Authorization: {{accessToken}}
+# Authorization: {{adminToken}}
+Authorization: {{normalToken}}
